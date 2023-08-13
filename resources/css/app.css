@@ -12,4 +12,12 @@ article {
     border-radius: 0 !important;
 }
 
+.server-message {
+    font-size: 1.25rem;
+}
+
+code {
+    width: 100%;
+}
+
 [x-cloak] { display: none !important; }

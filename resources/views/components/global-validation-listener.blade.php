@@ -2,7 +2,7 @@
     x-data="{
         __errors: {},
         init() {
-            Livewire.hook('message.processed', (message, component) => {
+            Livewire.hook('message.processed', (message) => {
                 this.__errors[message.component.id] = message.response.serverMemo.errors
             })
         },
@@ -22,10 +22,10 @@
 >
     <template x-for="component in components" :key="component">
         <div style="margin: 1rem 0;">
-            <code style="width: 100%">
+            <code>
                 <h6><span>Component: </span><span x-text="component"></span></h6>
                 <template x-for="(wireModel, index) in getWireModels(component)" :key="component + index">
-                    <div>
+                    <div style="padding-bottom: .75rem;">
                         [<span x-text="wireModel"></span>]
                         <div style="margin-top: .4rem;">
                             <template x-for="error in getErrorMessages(wireModel, component)">
@@ -41,7 +41,7 @@
     </template>
     <template x-if="!components.length">
         <code>
-            No Livewire errors reported
+            > No Livewire errors reported
         </code>
     </template>
 </div>
