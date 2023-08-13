@@ -14,17 +14,6 @@
 
     @livewireScripts
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-            Livewire.hook('message.processed', (message, component) => {
-                let errors = message.response.serverMemo.errors
-                component.el.dispatchEvent(new CustomEvent('validation-error', {
-                    detail: errors
-                }))
-            })
-        });
-    </script>
 </head>
 <body>
 
