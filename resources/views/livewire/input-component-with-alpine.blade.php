@@ -28,10 +28,11 @@
         </ul>
         <ul>
             <li>
-                <code style="width: 100%;">Component: {{ $this->id }}</code>
+                <code>Id: {{ $this->id }}</code>
             </li>
         </ul>
     </nav>
+
     <form wire:submit.prevent="save">
         <label>
             Update your age <small><span x-cloak x-show="showMessage" class="error-text">(error)</span></small>
@@ -46,7 +47,7 @@
         <button type="submit">Submit</button>
 
         <small>
-            <div style="font-size: 1.25rem;">
+            <div class="server-message">
                 {{ $message  }}
             </div>
             @error('age')
@@ -54,12 +55,13 @@
             @enderror
         </small>
     </form>
+
     <div style="margin-top: 2rem;">
         <h5><img src="/alpine.svg" style="height: 35px; width: 35px; padding-bottom: 5px;"/> Alpine <small>(nested)</small></h5>
         <template  x-if="wireModels.length" >
             <template x-for="wireModel in wireModels" :key="wireModel">
                 <div style="margin: 1rem 0;">
-                    <code style="width: 100%">
+                    <code>
                         [<span x-text="wireModel"></span>]
                         <div style="margin-top: .4rem;">
                             <template x-for="error in errors[wireModel]">
@@ -74,7 +76,7 @@
         </template>
         <template x-if="!wireModels.length">
             <code>
-                No Livewire errors reported
+                > No Livewire errors reported
             </code>
         </template>
     </div>

@@ -1,22 +1,38 @@
-
 <form wire:submit.prevent="save">
     <article>
-        <code style="width: 100%; margin-bottom: .5rem;">Component: {{ $this->id }}</code>
-        <div>
-            <label>
-                Update your age
-                <input wire:model="age" type="text" placeholder="Age" />
+        <code style="width: 100%; margin-bottom: .5rem;">Id: {{ $this->id }}</code>
+        <div class="grid" style="margin-top: .5rem;">
+            <label for="firstname">
+                First name
+                <input wire:model="user.first_name" type="text" id="firstname" name="firstname" placeholder="First name">
             </label>
 
+            <label for="lastname">
+                Last name
+                <input wire:model="user.last_name" type="text" id="lastname" name="lastname" placeholder="Last name">
+            </label>
+        </div>
+        <div>
+            <label>
+                Age
+                <input wire:model="age" type="text" placeholder="Age" />
+            </label>
+        </div>
+        <div>
             <button type="submit">Submit</button>
 
             <small>
-                <div style="font-size: 1.25rem;">
+                <div class="server-message">
                     {{ $message  }}
                 </div>
-                @error('age')
-                <div class="error-text">{{ $message }}</div>
-                @enderror
+
+                @foreach($this->getErrorBag()->messages() as $errors)
+                    <div style="padding: .25rem 0;">
+                        @foreach($errors as $message)
+                            <div class="error-text">{{ $message }}</div>
+                        @endforeach
+                    </div>
+                @endforeach
             </small>
         </div>
     </article>
