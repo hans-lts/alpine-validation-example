@@ -7,8 +7,6 @@ use Livewire\Component;
 
 class InputComponent extends Component
 {
-    use DispatchesValidation;
-
     public $message;
     public $age;
 

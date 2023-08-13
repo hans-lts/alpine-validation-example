@@ -8,8 +8,6 @@ use Livewire\Component;
 
 class InputComponentWithAlpine extends Component
 {
-    use DispatchesValidation;
-
     public $message;
     public $age;
 

@@ -2,8 +2,9 @@
     x-data="{
         __errors: {},
         init() {
-            window.errors = {}
-            this.__errors = window.errors;
+            Livewire.hook('message.processed', (message, component) => {
+                this.__errors[message.component.id] = message.response.serverMemo.errors
+            })
         },
         get components() {
             return Object.keys(this.__errors).filter(model => Object.values(this.__errors[model]).length > 0)
@@ -16,13 +17,8 @@
         },
         hasValidationErrors(component, model) {
             return this.getErrorMessages(component, model).length > 0 ?? false
-        },
-        processValidation({target, detail}) {
-            let wireComponent = target.getAttribute('wire:id')
-            this.__errors[wireComponent] = detail
         }
     }"
-    @validation-error.window="processValidation($event)"
 >
     <template x-for="component in components" :key="component">
         <div style="margin: 1rem 0;">

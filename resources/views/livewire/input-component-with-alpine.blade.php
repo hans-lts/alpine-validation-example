@@ -4,6 +4,9 @@
         wireModels: [],
         showMessage: false,
         component: @js($this->id),
+        reactiveErrors: null,
+        init() {
+        },
         getErrorMessages(model) {
             return this.errors[model] ?? []
         },
@@ -40,7 +43,7 @@
             />
         </label>
 
-        <button type="submit">Save</button>
+        <button type="submit">Submit</button>
 
         <small>
             <div style="font-size: 1.25rem;">
