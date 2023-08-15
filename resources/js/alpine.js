@@ -25,6 +25,7 @@ Alpine.store('validationErrors', {
 })
 
 Alpine.directive('shares-validation', (el, { value, modifiers, expression }, { Alpine, effect, cleanup }) => {
+    let wireId = el.closest('[wire\\:id]').getAttribute('wire:id');
 
     Alpine.magic('errors', (el, { Alpine }) => model => {
         return Alpine.$data(el).messages(model);
@@ -38,27 +39,27 @@ Alpine.directive('shares-validation', (el, { value, modifiers, expression }, { A
     Alpine.bind(el, {
         'x-data'() {
             return {
-                wireComponent: null,
+                wireId: null,
                 init() {
-                    this.wireComponent = el.closest('[wire\\:id]').getAttribute('wire:id');
+                    this.wireId = wireId;
                 },
                 get errors() {
-                    return this.$store.validationErrors.__errors[this.wireComponent] ?? []
+                    return this.$store.validationErrors.__errors[this.wireId] ?? []
                 },
                 get models() {
                     let errorList = [];
 
-                    for(const model of this.$store.validationErrors.getWireModels(this.wireComponent)) {
+                    for(const model of this.$store.validationErrors.getWireModels(this.wireId)) {
                         errorList.push({
                             name: model,
-                            errors: this.$store.validationErrors.getErrorMessages(this.wireComponent, model)
+                            errors: this.$store.validationErrors.getErrorMessages(this.wireId, model)
                         })
                     }
 
                     return errorList;
                 },
                 messages(model) {
-                    return this.$store.validationErrors.getErrorMessages(this.wireComponent, model)
+                    return this.$store.validationErrors.getErrorMessages(this.wireId, model)
                 }
             }
         }

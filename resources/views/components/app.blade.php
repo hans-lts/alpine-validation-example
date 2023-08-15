@@ -18,16 +18,16 @@
 
 @if($title)
     <nav class="container">
-        <div class="grid" style="width: 100%">
+        <div class="grid" style="width: 100%;">
             <ul>
                 <li>
                     <div style="font-size: 2rem; color: #ffffff; font-weight: 600">{{ $title }}</div>
                 </li>
             </ul>
-            <ul>
+            <ul class="nav-buttons">
                 <li>Examples:</li>
-                <li><a href="/" @class(['selected' => request()->path() === '/'])>Local component</a></li>
-                <li><a href="/global" @class(['selected' => request()->path() === 'global'])>Global component</a></li>
+                <li><a href="/" @class(['selected' => request()->path() === '/'])>Local events</a></li>
+                <li><a href="/global" @class(['selected' => request()->path() === 'global'])>Global store</a></li>
             </ul>
         </div>
     </nav>
