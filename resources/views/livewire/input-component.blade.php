@@ -1,4 +1,4 @@
-<form wire:submit.prevent="save">
+<form wire:submit.prevent="save" x-data x-shares-validation>
     <article>
         <code style="width: 100%; margin-bottom: .5rem;">Id: {{ $this->id }}</code>
         <div class="grid" style="margin-top: .5rem;">
@@ -14,7 +14,7 @@
         </div>
         <div>
             <label>
-                Age
+                Age <small class="error-text" x-show="$hasError('age')">(error)</small>
                 <input wire:model="age" type="text" placeholder="Age" />
             </label>
         </div>
@@ -25,14 +25,13 @@
                 <div class="server-message">
                     {{ $message  }}
                 </div>
-
-                @foreach($this->getErrorBag()->messages() as $errors)
+                <template x-for="model in models" :key="model.name">
                     <div style="padding: .25rem 0;">
-                        @foreach($errors as $message)
-                            <div class="error-text">{{ $message }}</div>
-                        @endforeach
+                        <template x-for="message in model.errors">
+                            <div class="error-text" x-text="message"></div>
+                        </template>
                     </div>
-                @endforeach
+                </template>
             </small>
         </div>
     </article>

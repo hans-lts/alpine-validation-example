@@ -4,9 +4,6 @@
         wireModels: [],
         showMessage: false,
         component: @js($this->id),
-        reactiveErrors: null,
-        init() {
-        },
         getErrorMessages(model) {
             return this.errors[model] ?? []
         },
@@ -16,6 +13,8 @@
         processValidation({detail}) {
             this.errors = detail
             this.wireModels = Object.keys(detail);
+
+            this.showMessage = this.wireModels.length
         }
     }"
     @validation-error="processValidation($event)"
@@ -40,7 +39,6 @@
                 wire:model="age"
                 type="text"
                 placeholder="Age"
-                @blur="showMessage = hasValidationErrors($el.getAttribute('wire:model'))"
             />
         </label>
 
@@ -51,7 +49,7 @@
                 {{ $message  }}
             </div>
             @error('age')
-            <div class="error-text">{{ $message }}</div>
+                <div class="error-text">{{ $message }}</div>
             @enderror
         </small>
     </form>
