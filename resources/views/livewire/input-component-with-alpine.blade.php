@@ -22,7 +22,7 @@
     <nav>
         <ul>
             <li>
-                <h5 style="margin-bottom: 0; white-space: nowrap">⚡ Livewire</h5>
+                <h5 style="margin-bottom: 0; white-space: nowrap"><img src="/livewire.svg" style="height: 35px; padding-bottom: 5px; margin-right: .15rem;"/> Livewire</h5>
             </li>
         </ul>
         <ul>
@@ -55,7 +55,7 @@
     </form>
 
     <div style="margin-top: 2rem;">
-        <h5><img src="/alpine.svg" style="height: 35px; width: 35px; padding-bottom: 5px;"/> Alpine <small>(nested)</small></h5>
+        <h5><img src="/alpine.svg" style="height: 35px; width: 35px; padding-bottom: 5px; margin-right: .15rem;"/> Alpine <small>(nested)</small></h5>
         <template  x-if="wireModels.length" >
             <template x-for="wireModel in wireModels" :key="wireModel">
                 <div style="margin: 1rem 0;">

@@ -1,34 +1,10 @@
 import Alpine from 'alpinejs'
 
-Alpine.store('validationErrors', {
-    __errors: {},
-    init() {
-        Livewire.hook('message.processed', (message) => {
-            this.__errors[message.component.id] = message.response.serverMemo.errors
-        })
-    },
-    get components() {
-        return Object.keys(this.__errors).filter(model => Object.values(this.__errors[model]).length > 0)
-    },
-    getWireModels(component) {
-        return Object.keys(this.__errors[component] ?? [])
-    },
-    getErrorMessages(component, model) {
-        if(!this.__errors[component]) {
-            return []
-        }
-        return this.__errors[component][model] ?? []
-    },
-    hasValidationErrors(component, model) {
-        return this.getErrorMessages(component, model).length > 0 ?? false
-    }
-})
-
-Alpine.directive('shares-validation', (el, { value, modifiers, expression }, { Alpine, effect, cleanup }) => {
+Alpine.directive('livewire-validation', (el, { value, modifiers, expression }, { Alpine, effect, cleanup }) => {
     let wireId = el.closest('[wire\\:id]').getAttribute('wire:id');
 
     Alpine.magic('errors', (el, { Alpine }) => model => {
-        return Alpine.$data(el).messages(model);
+        return Alpine.$data(el).messages(model, model.endsWith('*'));
     })
 
     Alpine.magic('hasError', (el, { Alpine }) => model => {
@@ -42,6 +18,33 @@ Alpine.directive('shares-validation', (el, { value, modifiers, expression }, { A
                 wireId: null,
                 init() {
                     this.wireId = wireId;
+
+                    // Register the validation store only once
+                    if(! this.$store['validationErrors']) {
+                        Alpine.store('validationErrors', {
+                            __errors: {},
+                            init() {
+                                Livewire.hook('message.processed', (message) => {
+                                    this.__errors[message.component.id] = message.response.serverMemo.errors
+                                })
+                            },
+                            get components() {
+                                return Object.keys(this.__errors).filter(model => Object.values(this.__errors[model]).length > 0)
+                            },
+                            getWireModels(component) {
+                                return Object.keys(this.__errors[component] ?? [])
+                            },
+                            getErrorMessages(component, model) {
+                                if(!this.__errors[component]) {
+                                    return []
+                                }
+                                return this.__errors[component][model] ?? []
+                            },
+                            hasValidationErrors(component, model) {
+                                return this.getErrorMessages(component, model).length > 0 ?? false
+                            }
+                        })
+                    }
                 },
                 get errors() {
                     return this.$store.validationErrors.__errors[this.wireId] ?? []
@@ -58,7 +61,18 @@ Alpine.directive('shares-validation', (el, { value, modifiers, expression }, { A
 
                     return errorList;
                 },
-                messages(model) {
+                messages(model, wildcard) {
+                    if(wildcard) {
+                        let messages = [];
+                        let modelPrefix = model.split('*')[0];
+                        let models = this.models.filter(model => model.name.startsWith(modelPrefix))
+
+                        for(const model of models) {
+                            messages.push(...model.errors)
+                        }
+
+                        return messages;
+                    }
                     return this.$store.validationErrors.getErrorMessages(this.wireId, model)
                 }
             }

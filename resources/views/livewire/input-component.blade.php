@@ -1,14 +1,14 @@
-<form wire:submit.prevent="save" x-data x-shares-validation>
+<form wire:submit.prevent="save" x-data x-livewire-validation>
     <article>
         <code style="width: 100%; margin-bottom: .5rem;">Id: {{ $this->id }}</code>
         <div class="grid" style="margin-top: .5rem;">
             <label for="firstname">
-                First name
+                First name <small class="error-text" x-show="$hasError('user.first_name')">(error)</small>
                 <input wire:model="user.first_name" type="text" id="firstname" name="firstname" placeholder="First name">
             </label>
 
             <label for="lastname">
-                Last name
+                Last name <small class="error-text" x-show="$hasError('user.last_name')">(error)</small>
                 <input wire:model="user.last_name" type="text" id="lastname" name="lastname" placeholder="Last name">
             </label>
         </div>
