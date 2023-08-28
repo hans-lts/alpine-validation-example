@@ -32,11 +32,11 @@
         </ul>
     </nav>
 
-    <form wire:submit.prevent="save">
+    <form wire:submit="save">
         <label>
             Update your age <small><span x-cloak x-show="showMessage" class="error-text">(error)</span></small>
             <input
-                wire:model="age"
+                wire:model.live="age"
                 type="text"
                 placeholder="Age"
             />
