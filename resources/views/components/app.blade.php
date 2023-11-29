@@ -7,12 +7,12 @@
 
     <title>Alpine validation</title>
 
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    @livewireStyles
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 
-    @livewireScripts
+    @livewireScriptConfig
 </head>
 <body>
 

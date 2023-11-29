@@ -4,16 +4,14 @@ namespace App\Livewire;
 
 use App\Traits\DispatchesValidation;
 use Illuminate\Contracts\Validation\Validator;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class InputComponentWithAlpine extends Component
 {
     public $message;
+    #[Rule('required|numeric|min:4')]
     public $age;
-
-    protected $rules = [
-        'age' => 'numeric|required'
-    ];
 
     public function save()
     {

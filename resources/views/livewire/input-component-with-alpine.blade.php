@@ -1,23 +1,30 @@
 <article
-    x-data="{
-        errors: [],
-        wireModels: [],
-        showMessage: false,
-        component: @js($this->id),
-        getErrorMessages(model) {
-            return this.errors[model] ?? []
-        },
-        hasValidationErrors(model) {
-            return this.getErrorMessages(model).length > 0 ?? false
-        },
-        processValidation({detail}) {
-            this.errors = detail
-            this.wireModels = Object.keys(detail);
 
-            this.showMessage = this.wireModels.length
+    x-data="{
+        init() {
+            // Get the wire:id attribute
+            // In cases where the Alpine component is not on the root of the
+            // Livewire element we will search for the closest one and track that
+            this.id = $el.__livewire.id ?? Alpine.findClosest(el, i => i.__livewire.id)
+
+            Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+                succeed(({ snapshot, effect }) => {
+                    // Only check updates from our component
+                    if(component.id === this.id) {
+                        this.errors = JSON.parse(snapshot).memo.errors;
+                    }
+                })
+            })
+        },
+        id: null,
+        errors: {},
+        get models() {
+            return Object.keys(this.errors ?? {})
+        },
+        getErrors(model) {
+            return this.errors[model] ?? []
         }
     }"
-    @validation-error="processValidation($event)"
 >
     <nav>
         <ul>
@@ -27,16 +34,16 @@
         </ul>
         <ul>
             <li>
-                <code>Id: {{ $this->id }}</code>
+                <code>Id: <span x-text="id">Loading...</span></code>
             </li>
         </ul>
     </nav>
 
     <form wire:submit="save">
         <label>
-            Update your age <small><span x-cloak x-show="showMessage" class="error-text">(error)</span></small>
+            Update your age <small><span x-cloak x-show="!!Object.keys(errors).length" class="error-text">(error)</span></small>
             <input
-                wire:model.live="age"
+                wire:model="age"
                 type="text"
                 placeholder="Age"
             />
@@ -49,33 +56,28 @@
                 {{ $message  }}
             </div>
             @error('age')
-                <div class="error-text">{{ $message }}</div>
+            <div class="error-text">{{ $message }}</div>
             @enderror
         </small>
     </form>
-
-    <div style="margin-top: 2rem;">
-        <h5><img src="/alpine.svg" style="height: 35px; width: 35px; padding-bottom: 5px; margin-right: .15rem;"/> Alpine <small>(nested)</small></h5>
-        <template  x-if="wireModels.length" >
-            <template x-for="wireModel in wireModels" :key="wireModel">
-                <div style="margin: 1rem 0;">
-                    <code>
-                        [<span x-text="wireModel"></span>]
-                        <div style="margin-top: .4rem;">
-                            <template x-for="error in errors[wireModel]">
-                                <div>
-                                    > <span class="error-text" x-text="error"></span>
-                                </div>
-                            </template>
-                        </div>
-                    </code>
-                </div>
-            </template>
+    <div style="margin-top: 2rem;" wire:ignore>
+        <h5><img src="/alpine.svg" style="height: 35px; width: 35px; padding-bottom: 5px; margin-right: .15rem;"/> Alpine</h5>
+        <template x-for="(model, index) in models" :key="index">
+            <div style="margin: 1rem 0;">
+                <code>
+                    [<span x-text="model"></span>]
+                    <div style="margin-top: .4rem;">
+                        <template x-for="(message, index) in getErrors(model)" :key="index">
+                            <div :id="index">
+                                > <span class="error-text" x-text="message"></span>
+                            </div>
+                        </template>
+                    </div>
+                </code>
+            </div>
         </template>
-        <template x-if="!wireModels.length">
-            <code>
-                > No Livewire errors reported
-            </code>
-        </template>
+        <code x-cloak x-show="!Object.keys(errors).length">
+            > No Livewire errors reported
+        </code>
     </div>
 </article>

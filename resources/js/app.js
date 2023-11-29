@@ -1,9 +1,8 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs'
+import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
-import validationPlugin from './dist/livewire-validation.js'
-Alpine.plugin(validationPlugin)
+import ValidationPlugin from './dist/livewire-validation.js'
 
-window.Alpine = Alpine
-Alpine.start()
+Alpine.plugin(ValidationPlugin)
+Livewire.start()
