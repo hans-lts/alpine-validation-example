@@ -1,4 +1,4 @@
-<form wire:submit.prevent="save" x-data x-livewire-validation>
+<form wire:submit.prevent="save" x-data x-share-validation>
     <article>
         <code style="width: 100%; margin-bottom: .5rem;">Id: {{ $this->id }}</code>
         <div class="grid" style="margin-top: .5rem;">
