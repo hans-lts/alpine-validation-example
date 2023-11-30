@@ -1,4 +1,4 @@
-<article x-data x-validation>
+<article x-data x-wire-errors>
     <nav>
         <ul>
             <li>

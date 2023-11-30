@@ -13,7 +13,15 @@ Clone the repo to a local folder and install the composer dependencies.
 ```bash
 > composer install
 ```
-Next, start up the Laravel server and access the site from your browser.
+
+Next, install the NPM dependencies
+
+```bash
+> npm i
+> npm run build
+```
+
+Lastly, start up the Laravel server and access the site from your browser.
 
 ```bash
 > php artisan serve

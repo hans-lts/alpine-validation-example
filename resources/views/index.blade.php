@@ -1,4 +1,4 @@
-<x-app title="Local component">
+<x-app title="Example">
     <div class="grid">
         <livewire:input-component-with-alpine />
         <livewire:input-component-with-alpine />
